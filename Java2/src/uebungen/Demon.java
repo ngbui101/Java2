@@ -8,8 +8,7 @@ public class Demon extends Fiend{
 
 	@Override
 	public void attack(Hero hero) {
-		// TODO Auto-generated method stub
-		
+		hero.setHealth(hero.getHealth() - Die.throwDie());
 	}
 	
 	
