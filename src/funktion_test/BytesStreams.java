@@ -11,7 +11,7 @@ public class BytesStreams {
         FileOutputStream out = null;
 
         try {
-            in = new FileInputStream("z	itate.xml");
+            in = new FileInputStream("zitate.xml");
             out = new FileOutputStream("zitate.txt");
             int c;
 
