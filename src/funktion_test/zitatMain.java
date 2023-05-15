@@ -1,32 +1,56 @@
 package funktion_test;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class zitatMain {
-	
-	public String inhaltExtrahieren(String zeile, String tag) {
-		Scanner sc = new Scanner(zeile);
-		String inhalt = "";
-		while (sc.hasNext()) {
-			String wort = (String) sc.next();
-			if(wort.equals(tag)) {
-			
-			}
-			
+
+	public static String inhaltExtrahieren(String zeile, String tag) {
+		String inhalt;
+		if (zeile.indexOf("<" + tag + ">") != -1) {
+			int beginn = zeile.indexOf(">");
+			int ende = zeile.indexOf("<", beginn);
+			inhalt = zeile.substring(beginn + 1, ende);
+			return inhalt;
 		}
-		sc.close();
-		return null;
+		return "-1";
 	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("zitate.xml"));
-		//PrintWriter out = new PrintWriter(new FileWriter("Zitate.txt"));
-		String temp = in.readLine();
-		Scanner sc = new Scanner(temp);
-		System.out.println(sc.next());
+		PrintWriter out = new PrintWriter(new FileWriter("zitateTest.txt"));
+//		String test = "<name>Hermann Josef Abs</name>";
+//		test = inhaltExtrahieren(test, "name");
+//		System.out.println(test);
+		// Zeile einlesen
+		String zeile;
+		while ((zeile = in.readLine()) != null) {
+			// System.out.println("erste Schleife test");
+			if (zeile.indexOf("<person>") != -1) {
+//ok				System.out.println("erste Bedingung test");
+				String name = "";
+				String beschreibung = "";
+				String zitat = "";
+				while ((zeile = in.readLine()) != null) {
+//ok					System.out.println("Test 2.Schleife");
+					if (zeile.indexOf("<name>") != -1)
+						name = inhaltExtrahieren(zeile, "name");
+					else if (zeile.indexOf("<beschreibung>") != -1)
+						beschreibung = inhaltExtrahieren(zeile, "beschreibung");
+					else if (zeile.indexOf("<zitat>") != -1)
+						zitat += inhaltExtrahieren(zeile, "zitat") + " ";
+					else
+						break;
+				}
+				String ausgabe = "\"" + zitat.trim() + "\"\n" + name + ", " + beschreibung;
+				System.out.println(ausgabe);
+				out.println(ausgabe);
+			}
+		}
+
+		out.flush();
+		out.close();
 		in.close();
-		sc.close();
+
 	}
 
 }
